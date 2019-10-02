@@ -7,4 +7,5 @@
 
 .addCity {
   font-size: large;
+  display: flex;
 }

@@ -52,6 +52,8 @@ function showInfo(event) {
         humedad.innerHTML = "Humedad: " + childNodes.val().humidity;
         temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature;
         imagen.src = childNodes.val().icon;
+        changeMap(childNodes.val().latitude,childNodes.val().longitude);
+        /*
         var uluru = {
           lat: childNodes.val().latitude,
           lng: childNodes.val().longitude
@@ -61,11 +63,13 @@ function showInfo(event) {
             zoom: 4,
             center: uluru
           });
+
         var marker = new google.maps.Marker({
           position: uluru,
           map: map
         });
-        map.panTo(center);
+        */
+        //map.panTo(center);
 
       }
       //This loop iterates over children of user_id
@@ -85,6 +89,25 @@ function initMap() {
   var uluru = {
     lat: -12.084734,
     lng: 76.971024
+  };
+  // The map, centered at Uluru
+  var map = new google.maps.Map(
+    document.getElementById('map'), {
+      zoom: 4,
+      center: uluru
+    });
+  // The marker, positioned at Uluru
+  var marker = new google.maps.Marker({
+    position: uluru,
+    map: map
+  });
+}
+
+function changeMap(x, y) {
+  // The location of Uluru
+  var uluru = {
+    lat: x,
+    lng: y
   };
   // The map, centered at Uluru
   var map = new google.maps.Map(
