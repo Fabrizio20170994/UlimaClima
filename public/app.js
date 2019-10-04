@@ -52,7 +52,7 @@ function showInfo(event) {
         humedad.innerHTML = "Humedad: " + childNodes.val().humidity;
         temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature;
         imagen.src = childNodes.val().icon;
-        changeMap(childNodes.val().latitude,childNodes.val().longitude);
+        changeMap(childNodes.val().latitude, childNodes.val().longitude);
         /*
         var uluru = {
           lat: childNodes.val().latitude,

@@ -27,7 +27,7 @@
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid header">
     <div class="row">
 
       <div class="dropdown col-xs-6">
@@ -37,20 +37,28 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="opciones">
         </div>
       </div>
-      <div class="addCity btn btn-outline-secondary col-xs-6">
-          +
-      </div>
     </div>
   </div>
-  <div>
-    <span class="humedad" id="humedad"></span>
-    <br>
-    <span class="temperatura" id="temperatura"></span>
-    <br>
-  </div>
-  <div>
-    <img src="" id="imagen">
-  </div>
+  <section id="features">
+
+    <div class="row">
+
+
+      <div class="feature-box col-lg-4">
+        <i class="fas fa-tint fa-3x features-icon"></i>
+        <h3 class="feature-heading">Humedad</h3>
+        <p id="humedad"></p>
+      </div>
+      <div class="feature-box col-lg-4">
+        <i class="fas fa-bullseye fa-3x features-icon"></i>
+        <h3 class="feature-heading">Temperatura</h3>
+        <p id="temperatura">We have all the dogs, the greatest dogs.</p>
+      </div>
+      <div class="feature-box col-lg-4">
+        <img src="" class="img-fluid pull-xs-left" alt="..." id="imagen">
+      </div>
+    </div>
+  </section>
   <div id="location">
     Google Maps
     <div id="map"></div>

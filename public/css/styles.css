@@ -5,7 +5,33 @@
   /* The width is the width of the web page */
 }
 
+
+
 .addCity {
   font-size: large;
   display: flex;
+}
+
+.header {
+  text-align: center;
+}
+
+.card-body{
+  text-align: center;
+}
+
+html, body {
+  background-color: #ffccff;
+}
+
+#features {
+  padding: 7% 15%;
+  background-color: white;
+  position: relative;
+}
+
+.features-icon {
+  color: #ef8172;
+  margin-bottom: 1rem;
+
 }
