@@ -98,3 +98,14 @@ function initMap() {
     map: map
   });
 }
+
+function addCity() {
+  const db = firebase.database();
+  var ref = db.ref("city");
+ref.push({
+  alanisawesome: {
+    date_of_birth: "June 23, 1912",
+    full_name: "Alan Turing"
+  }
+});
+}
