@@ -3,20 +3,12 @@ document.addEventListener("DOMContentLoaded", event => {
 
   const db = firebase.database();
 
-  /*
-  db.ref('city').on('value',(snap)=>{
 
-      console.log(snap.val());
-      var para = document.createElement("a");
-      var node = document.createTextNode(childNodes.val().name);
-      para.appendChild(node);
-      element.appendChild(para);
-    });
-  */
+// Añadir cada elemento de la base de datos como un botón
   var element = document.getElementById("opciones");
 
   db.ref("city").on('value', function(snap) {
-
+    document.getElementById("opciones").innerHTML = "";
     snap.forEach(function(childNodes) {
 
       var para = document.createElement("a");
@@ -102,10 +94,12 @@ function initMap() {
 function addCity() {
   const db = firebase.database();
   var ref = db.ref("city");
-ref.push({
-  alanisawesome: {
-    date_of_birth: "June 23, 1912",
-    full_name: "Alan Turing"
-  }
+ref.child("Prueba").set({
+    humidity: "June 23, 1912",
+    icon: "Alan Turing",
+    latitude: " ",
+    longitude: 0,
+    name: "Prueba",
+    temperature: 0
 });
 }
