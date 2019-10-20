@@ -92,14 +92,19 @@ function initMap() {
 }
 
 function addCity() {
+  var x = document.getElementsByClassName("datoCiudad");
   const db = firebase.database();
   var ref = db.ref("city");
-ref.child("Prueba").set({
-    humidity: "June 23, 1912",
-    icon: "Alan Turing",
-    latitude: " ",
-    longitude: 0,
-    name: "Prueba",
-    temperature: 0
+ref.child(x[4].value).set({
+    humidity: x[0].value,
+    icon: x[1].value,
+    latitude: parseFloat(x[2].value),
+    longitude: parseFloat(x[3].value),
+    name: x[4].value,
+    temperature: parseFloat(x[5].value)
 });
+for (var i = 0;i<x.length;i++){
+  x[i].value = "";
+}
+getElementById("modalLoginForm").fadeOut('slow');
 }
