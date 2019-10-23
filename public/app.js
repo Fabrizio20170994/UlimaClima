@@ -59,6 +59,7 @@ function showInfo(event) {
         });
         map.panTo(center);
 
+
       }
       //This loop iterates over children of user_id
       //childNodes.key is key of the children of userid such as (20170710)
@@ -89,6 +90,9 @@ function initMap() {
     position: uluru,
     map: map
   });
+  google.maps.event.addListener(map, 'click', function(event) {
+  placeMarker(event.latLng);
+});
 }
 
 function addCity() {
