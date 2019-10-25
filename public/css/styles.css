@@ -1,5 +1,12 @@
 
 #map {
+<<<<<<< HEAD
   height: 300px;
   width: 100%;
+=======
+  height: 400px;
+  /* The height is 400 pixels */
+  width: 50%;
+  /* The width is the width of the web page */
+>>>>>>> aa2d465eef49832e52cceb4a0bc0659f5754e149
 }

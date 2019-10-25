@@ -41,8 +41,8 @@ function showInfo(event) {
     snap.forEach(function(childNodes) {
 
       if (event.target.id == childNodes.val().name) {
-        humedad.innerHTML = "Humedad: " + childNodes.val().humidity;
-        temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature;
+        humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
+        temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " C";
         imagen.src = childNodes.val().icon;
         var uluru = {
           lat: childNodes.val().latitude,
@@ -58,6 +58,7 @@ function showInfo(event) {
           map: map
         });
         map.panTo(center);
+
 
       }
       //This loop iterates over children of user_id
@@ -89,6 +90,9 @@ function initMap() {
     position: uluru,
     map: map
   });
+  google.maps.event.addListener(map, 'click', function(event) {
+  placeMarker(event.latLng);
+});
 }
 
 function addCity() {
