@@ -30,17 +30,17 @@
 
   <section id="cabecera">
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="navegador">
 
-        <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown menu">
+          <button class="btn btn-outline dropdown-toggle menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Seleccionar Ciudad
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="opciones">
           </div>
 
-        <div class="addCity btn btn-outline-secondary col-xs-6" data-toggle="modal" data-target="#modalLoginForm">
-          +
+        <div class="addCity btn btn-outline col-xs-6" data-toggle="modal" data-target="#modalLoginForm">
+          <i class="fas fa-plus"></i> 
         </div>
 
     </div>
@@ -108,8 +108,8 @@
 
   <section id="caracteristicas">
 
-    <div class="container-fluid">
-      <span class="humedad" id="humedad"></span>
+    <div class="container-fluid" id="car">
+      <span class="humedad" id="humedad">Seleccione una ciudad para ver sus características</span>
       <br>
       <span class="temperatura" id="temperatura"></span>
       <br>
