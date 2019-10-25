@@ -44,7 +44,7 @@ function showInfo(event) {
       if (event.target.id == childNodes.val().name) {
         textoDropdown.innerHTML = childNodes.val().name;
         humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
-        temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " C";
+        temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " °C";
         cartaImagen.innerHTML = '<img src="" id="imagen">';
         var imagen = document.getElementById("imagen");
         imagen.src = childNodes.val().icon;
