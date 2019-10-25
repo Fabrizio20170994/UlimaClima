@@ -1,15 +1,14 @@
 
 #map {
-  height: 500px;
-  width: 800px;
+  height: 50%;
+  width: 50%;
   display:inline-block;
 }
 
 #location {
   text-align: center;
-  height: 80%;
+  height: 50%;
   width: 50%;
-
 }
 
 .container-fluid {
@@ -44,5 +43,14 @@ html, body {
 }
 
 .fa-plus {
+  color: white;
+}
+
+.texto-card {
+  text-align: center;
+}
+
+.card-group, .card {
+  background-color: #222;
   color: white;
 }
