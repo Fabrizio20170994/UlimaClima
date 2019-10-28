@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", event => {
   // Añadir cada elemento de la base de datos como un botón
   var element = document.getElementById("opciones");
 
+  var modalLatitude = 0;
+  var modalLongitude = 0;
+
   db.ref("city").on('value', function(snap) {
     document.getElementById("opciones").innerHTML = "";
     snap.forEach(function(childNodes) {
@@ -25,6 +28,8 @@ document.addEventListener("DOMContentLoaded", event => {
       //childNodes.val().time;
       //childNodes.val().rest_time;
       //childNodes.val().interval_time;
+
+
 
     });
   });
@@ -201,6 +206,7 @@ function showInfo(event) {
 
 }
 
+var markersArray = [];
 
 function initMap() {
   // The location of Uluru
@@ -482,12 +488,27 @@ function initMap() {
     placeMarker2(event.latLng);
   });
 
+
+
+
+  function clearOverlays() {
+    for (var i = 0; i < markersArray.length; i++) {
+      markersArray[i].setMap(null);
+    }
+    markersArray.length = 0;
+  }
+
   function placeMarker2(location) {
     var marker = new google.maps.Marker({
       position: location,
       map: map2
     });
+    clearOverlays();
+    markersArray.push(marker);
   }
+
+
+
 
 
   // The marker, positioned at Uluru
@@ -499,19 +520,26 @@ function initMap() {
 }
 
 function addCity() {
-  var x = document.getElementsByClassName("datoCiudad");
-  const db = firebase.database();
-  var ref = db.ref("city");
-  ref.child(x[4].value).set({
-    humidity: x[0].value,
-    icon: x[1].value,
-    latitude: parseFloat(x[2].value),
-    longitude: parseFloat(x[3].value),
-    name: x[4].value,
-    temperature: parseFloat(x[5].value)
-  });
-  for (var i = 0; i < x.length; i++) {
-    x[i].value = "";
+  if (markersArray.length == 0) {
+    alert("Coloque un puntero");
   }
-  getElementById("modalLoginForm").fadeOut('slow');
+   else {
+    var x = document.getElementsByClassName("datoCiudad");
+    const db = firebase.database();
+    var ref = db.ref("city");
+    ref.child(x[2].value).set({
+      humidity: x[0].value,
+      icon: x[1].value,
+      latitude: markersArray[0].getPosition().lat(),
+      longitude: markersArray[0].getPosition().lng(),
+      name: x[2].value,
+      temperature: parseFloat(x[3].value)
+    });
+
+    for (var i = 0; i < x.length; i++) {
+      x[i].value = "";
+    }
+    getElementById("modalLoginForm").fadeOut('slow');
+    getElementById("modalLoginForm").modal('hide');
+  }
 }
