@@ -1,0 +1,22 @@
+{
+  "name": "ulima-clima",
+  "version": "1.0.0",
+  "description": "Carlos Fabrizio Montemayor Guillen  20170994 Universidad de Lima",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fabrizio20170994/UlimaClima.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fabrizio20170994/UlimaClima/issues"
+  },
+  "homepage": "https://github.com/Fabrizio20170994/UlimaClima#readme",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}

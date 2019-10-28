@@ -509,14 +509,6 @@ function initMap() {
 
 
 
-
-
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({
-    position: uluru,
-    map: map
-  });
-
 }
 
 function addCity() {
@@ -539,7 +531,6 @@ function addCity() {
     for (var i = 0; i < x.length; i++) {
       x[i].value = "";
     }
-    getElementById("modalLoginForm").fadeOut('slow');
-    getElementById("modalLoginForm").modal('hide');
+    alert("Ciudad agregada con exito");
   }
 }
