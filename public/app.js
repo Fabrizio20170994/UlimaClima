@@ -208,6 +208,13 @@ function showInfo(event) {
 
 var markersArray = [];
 
+function clearOverlays() {
+  for (var i = 0; i < markersArray.length; i++) {
+    markersArray[i].setMap(null);
+  }
+  markersArray.length = 0;
+}
+
 function initMap() {
   // The location of Uluru
   var uluru = {
@@ -489,15 +496,6 @@ function initMap() {
   });
 
 
-
-
-  function clearOverlays() {
-    for (var i = 0; i < markersArray.length; i++) {
-      markersArray[i].setMap(null);
-    }
-    markersArray.length = 0;
-  }
-
   function placeMarker2(location) {
     var marker = new google.maps.Marker({
       position: location,
@@ -511,12 +509,20 @@ function initMap() {
 
 }
 
+
+
+
 function addCity() {
-  if (markersArray.length == 0) {
-    alert("Coloque un puntero");
+  var x = document.getElementsByClassName("datoCiudad");
+  var y = 1;
+  for (i = 0; i < x.length; i++) {
+    if(x[i].value == "") y = 0;
+  }
+
+  if (markersArray.length == 0 || y == 0) {
+    alert("Rellene todos los campos");
   }
    else {
-    var x = document.getElementsByClassName("datoCiudad");
     const db = firebase.database();
     var ref = db.ref("city");
     ref.child(x[2].value).set({
@@ -528,9 +534,10 @@ function addCity() {
       temperature: parseFloat(x[3].value)
     });
 
-    for (var i = 0; i < x.length; i++) {
+    for (i = 0; i < x.length; i++) {
       x[i].value = "";
     }
+    clearOverlays();
     alert("Ciudad agregada con exito");
   }
 }
