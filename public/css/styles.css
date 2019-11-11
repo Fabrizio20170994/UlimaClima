@@ -48,7 +48,7 @@ html, body {
   background-color: #375a7f;
 }
 
-.fa-plus {
+.fas {
   color: white;
 }
 
@@ -157,4 +157,9 @@ opacity: .5;
 
 .card {
   border: #444;
+}
+
+.icon-refresh {
+  float: left;
+  display: inline-block;
 }

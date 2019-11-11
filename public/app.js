@@ -53,6 +53,8 @@ function showInfo(event) {
         cartaImagen.innerHTML = '<img src="" id="imagen">';
         var imagen = document.getElementById("imagen");
         imagen.src = childNodes.val().icon;
+        longitudActual = childNodes.val().longitude;
+        latitudActual = childNodes.val().latitude;
         var uluru = {
           lat: childNodes.val().latitude,
           lng: childNodes.val().longitude
@@ -61,135 +63,13 @@ function showInfo(event) {
           document.getElementById('map'), {
             zoom: 4,
             center: uluru,
-            styles: [{
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#242f3e'
-                }]
-              },
-              {
-                elementType: 'labels.text.stroke',
-                stylers: [{
-                  color: '#242f3e'
-                }]
-              },
-              {
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#746855'
-                }]
-              },
-              {
-                featureType: 'administrative.locality',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#d59563'
-                }]
-              },
-              {
-                featureType: 'poi',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#d59563'
-                }]
-              },
-              {
-                featureType: 'poi.park',
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#263c3f'
-                }]
-              },
-              {
-                featureType: 'poi.park',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#6b9a76'
-                }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#38414e'
-                }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.stroke',
-                stylers: [{
-                  color: '#212a37'
-                }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#9ca5b3'
-                }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#746855'
-                }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'geometry.stroke',
-                stylers: [{
-                  color: '#1f2835'
-                }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#f3d19c'
-                }]
-              },
-              {
-                featureType: 'transit',
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#2f3948'
-                }]
-              },
-              {
-                featureType: 'transit.station',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#d59563'
-                }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'geometry',
-                stylers: [{
-                  color: '#17263c'
-                }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'labels.text.fill',
-                stylers: [{
-                  color: '#515c6d'
-                }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'labels.text.stroke',
-                stylers: [{
-                  color: '#17263c'
-                }]
-              }
-            ]
+            styles: nightModeMapStyles
           });
         var marker = new google.maps.Marker({
           position: uluru,
           map: map
         });
+
         map.panTo(center);
 
 
@@ -206,6 +86,144 @@ function showInfo(event) {
 
 }
 
+
+
+function placeMarker(location,map) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+}
+
+const nightModeMapStyles = [{
+    elementType: 'geometry',
+    stylers: [{
+      color: '#242f3e'
+    }]
+  },
+  {
+    elementType: 'labels.text.stroke',
+    stylers: [{
+      color: '#242f3e'
+    }]
+  },
+  {
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#746855'
+    }]
+  },
+  {
+    featureType: 'administrative.locality',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#d59563'
+    }]
+  },
+  {
+    featureType: 'poi',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#d59563'
+    }]
+  },
+  {
+    featureType: 'poi.park',
+    elementType: 'geometry',
+    stylers: [{
+      color: '#263c3f'
+    }]
+  },
+  {
+    featureType: 'poi.park',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#6b9a76'
+    }]
+  },
+  {
+    featureType: 'road',
+    elementType: 'geometry',
+    stylers: [{
+      color: '#38414e'
+    }]
+  },
+  {
+    featureType: 'road',
+    elementType: 'geometry.stroke',
+    stylers: [{
+      color: '#212a37'
+    }]
+  },
+  {
+    featureType: 'road',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#9ca5b3'
+    }]
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'geometry',
+    stylers: [{
+      color: '#746855'
+    }]
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
+    stylers: [{
+      color: '#1f2835'
+    }]
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#f3d19c'
+    }]
+  },
+  {
+    featureType: 'transit',
+    elementType: 'geometry',
+    stylers: [{
+      color: '#2f3948'
+    }]
+  },
+  {
+    featureType: 'transit.station',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#d59563'
+    }]
+  },
+  {
+    featureType: 'water',
+    elementType: 'geometry',
+    stylers: [{
+      color: '#17263c'
+    }]
+  },
+  {
+    featureType: 'water',
+    elementType: 'labels.text.fill',
+    stylers: [{
+      color: '#515c6d'
+    }]
+  },
+  {
+    featureType: 'water',
+    elementType: 'labels.text.stroke',
+    stylers: [{
+      color: '#17263c'
+    }]
+  }
+];
+
+var latitudActual = 0;
+
+var longitudActual = 0;
+
 var markersArray = [];
 
 function clearOverlays() {
@@ -214,6 +232,9 @@ function clearOverlays() {
   }
   markersArray.length = 0;
 }
+
+
+
 
 function initMap() {
   // The location of Uluru
@@ -226,269 +247,19 @@ function initMap() {
     document.getElementById('map'), {
       zoom: 4,
       center: uluru,
-      styles: [{
-          elementType: 'geometry',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#263c3f'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#6b9a76'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#38414e'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#212a37'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#9ca5b3'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#1f2835'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#f3d19c'
-          }]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#2f3948'
-          }]
-        },
-        {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#17263c'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#515c6d'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#17263c'
-          }]
-        }
-      ]
+      styles: nightModeMapStyles
     });
   google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(event.latLng);
+    placeMarker(event.latLng,map);
   });
 
-  function placeMarker(location) {
-    var marker = new google.maps.Marker({
-      position: location,
-      map: map
-    });
-  }
+
+
   var map2 = new google.maps.Map(
     document.getElementById('modalMap'), {
       zoom: 4,
       center: uluru,
-      styles: [{
-          elementType: 'geometry',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#263c3f'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#6b9a76'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#38414e'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#212a37'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#9ca5b3'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#1f2835'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#f3d19c'
-          }]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#2f3948'
-          }]
-        },
-        {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#17263c'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#515c6d'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#17263c'
-          }]
-        }
-      ]
+      styles: nightModeMapStyles
     });
 
   google.maps.event.addListener(map2, 'click', function(event) {
@@ -505,39 +276,111 @@ function initMap() {
     markersArray.push(marker);
   }
 
-
-
 }
 
 
 
 
 function addCity() {
+  const db = firebase.database();
+  var isInDb = 0;
   var x = document.getElementsByClassName("datoCiudad");
   var y = 1;
+  var z = 1;
   for (i = 0; i < x.length; i++) {
-    if(x[i].value == "") y = 0;
+    if (x[i].value == "") y = 0;
+    if (isNaN(x[0].value) || isNaN(x[3].value)) z = 0;
   }
 
   if (markersArray.length == 0 || y == 0) {
     alert("Rellene todos los campos");
-  }
-   else {
-    const db = firebase.database();
-    var ref = db.ref("city");
-    ref.child(x[2].value).set({
-      humidity: x[0].value,
-      icon: x[1].value,
-      latitude: markersArray[0].getPosition().lat(),
-      longitude: markersArray[0].getPosition().lng(),
-      name: x[2].value,
-      temperature: parseFloat(x[3].value)
-    });
+  } else {
+    if (z == 0) {
+      alert("Humedad y temperatura deben de ser numeros");
+    } else {
+      db.ref("city").on('value', function(snap) {
 
-    for (i = 0; i < x.length; i++) {
-      x[i].value = "";
+        snap.forEach(function(childNodes) {
+          if (x[2].value == childNodes.val().name ||
+            (markersArray[0].getPosition().lat() == childNodes.val().latitude && markersArray[0].getPosition().lng() == childNodes.val().longitude)) {
+            isInDb = 1;
+          }
+
+        });
+
+      });
+
+      if (isInDb) {
+        alert("Esta ciudad ya ha sido agredada anteriormente");
+      } else {
+        var ref = db.ref("city");
+        ref.child(x[2].value).set({
+          humidity: x[0].value,
+          icon: x[1].value,
+          latitude: markersArray[0].getPosition().lat(),
+          longitude: markersArray[0].getPosition().lng(),
+          name: x[2].value,
+          temperature: parseFloat(x[3].value)
+        });
+
+        for (i = 0; i < x.length; i++) {
+          x[i].value = "";
+        }
+        clearOverlays();
+        alert("Ciudad agregada con exito");
+      }
     }
-    clearOverlays();
-    alert("Ciudad agregada con exito");
   }
+}
+
+
+function editCity() {
+  var nombre = document.getElementById("dropdownMenuButton").innerHTML;
+  const db = firebase.database();
+  var x = document.getElementsByClassName("datoCiudad");
+  var y = 1;
+  var z = 1;
+  for (i = 0; i < x.length; i++) {
+    if (x[i].value == "") y = 0;
+    if (isNaN(x[0].value) || isNaN(x[3].value)) z = 0;
+  }
+
+  if (markersArray.length == 0 || y == 0) {
+    alert("Rellene todos los campos");
+  } else {
+    if (z == 0) {
+      alert("Humedad y temperatura deben de ser numeros");
+    } else {
+      var ref = db.ref("city");
+      ref.child(nombre).update({
+        humidity: parseFloat(x[0].value),
+        icon: x[1].value,
+        latitude: markersArray[0].getPosition().lat(),
+        longitude: markersArray[0].getPosition().lng(),
+        name: x[2].value,
+        temperature: parseFloat(x[3].value)
+      });
+
+      for (i = 0; i < x.length; i++) {
+        x[i].value = "";
+      }
+      clearOverlays();
+      alert("Ciudad editada con exito");
+    }
+  }
+
+}
+
+
+
+function setAdd() {
+  boton = document.getElementById("botonModal");
+  boton.innerHTML = "Añadir";
+  boton.setAttribute("onclick","addCity()");
+}
+
+function setEdit() {
+  boton = document.getElementById("botonModal");
+  boton.innerHTML = "Editar";
+  boton.setAttribute("onclick","editCity()");
 }
