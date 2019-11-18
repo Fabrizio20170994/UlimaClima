@@ -42,15 +42,18 @@ function showInfo(event) {
   var location = document.getElementById("location");
   var cartaImagen = document.getElementById("carta-imagen");
   var textoDropdown = document.getElementById("dropdownMenuButton");
-  db.ref("city").on('value', function(snap) {
+
+  db.ref("city").on ('value', function(snap) {
 
     snap.forEach(function(childNodes) {
 
       if (event.target.id == childNodes.val().name) {
         textoDropdown.innerHTML = childNodes.val().name;
+        ciudadActual = childNodes.val().name;
         humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
         temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " °C";
         cartaImagen.innerHTML = '<img src="" id="imagen">';
+
         var imagen = document.getElementById("imagen");
         imagen.src = childNodes.val().icon;
         longitudActual = childNodes.val().longitude;
@@ -59,18 +62,32 @@ function showInfo(event) {
           lat: childNodes.val().latitude,
           lng: childNodes.val().longitude
         };
-        var map = new google.maps.Map(
-          document.getElementById('map'), {
-            zoom: 4,
-            center: uluru,
-            styles: nightModeMapStyles
-          });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+
+        var myOptions = {
+          zoom: 4,
+          center: uluru,
+          styles: nightModeMapStyles
+        };
+
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+        var map2 = new google.maps.Map(document.getElementById('modalMap'), myOptions);
+
+
+        placeMarker(uluru, map);
+        placeMarker(uluru, map2);
 
         map.panTo(center);
+        map2.panTo(center);
+
+        google.maps.event.addListener(map2, 'click', function(event) {
+          placeMarker2(event.latLng);
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          placeMarker(event.latLng, map);
+        });
+
+
 
 
       }
@@ -86,9 +103,17 @@ function showInfo(event) {
 
 }
 
+function placeMarker2(location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map2
+  });
+  clearOverlays();
+  markersArray.push(marker);
+}
 
 
-function placeMarker(location,map) {
+function placeMarker(location, map) {
   var marker = new google.maps.Marker({
     position: location,
     map: map
@@ -226,6 +251,9 @@ var longitudActual = 0;
 
 var markersArray = [];
 
+var ciudadActual = "";
+
+
 function clearOverlays() {
   for (var i = 0; i < markersArray.length; i++) {
     markersArray[i].setMap(null);
@@ -250,7 +278,7 @@ function initMap() {
       styles: nightModeMapStyles
     });
   google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(event.latLng,map);
+    placeMarker(event.latLng, map);
   });
 
 
@@ -266,7 +294,6 @@ function initMap() {
     placeMarker2(event.latLng);
   });
 
-
   function placeMarker2(location) {
     var marker = new google.maps.Marker({
       position: location,
@@ -276,8 +303,9 @@ function initMap() {
     markersArray.push(marker);
   }
 
-}
 
+
+}
 
 
 
@@ -371,16 +399,57 @@ function editCity() {
 
 }
 
+function deleteCity() {
+  const db = firebase.database();
+
+  var ciudadRef = firebase.database().ref('city/' + ciudadActual);
+
+  ciudadActual = "";
+
+  ciudadRef.remove();
+
+
+  /*db.ref("city").on('value', function(snap) {
+
+    snap.forEach(function(childNodes) {
+      if (ciudadActual == childNodes.val().name) {
+
+      }
+    });
+  });
+  */
+}
+
 
 
 function setAdd() {
   boton = document.getElementById("botonModal");
   boton.innerHTML = "Añadir";
-  boton.setAttribute("onclick","addCity()");
+  boton.setAttribute("onclick", "addCity()");
+  var campos = document.getElementsByClassName("datoCiudad");
+  campos[0].value = "";
+  campos[1].value = "";
+  campos[2].value = "";
+  campos[3].value = "";
 }
 
 function setEdit() {
+  const db = firebase.database();
   boton = document.getElementById("botonModal");
   boton.innerHTML = "Editar";
-  boton.setAttribute("onclick","editCity()");
+  titulo = document.getElementById("tituloModal");
+  titulo.innerHTML = "Editar Ciudad";
+  boton.setAttribute("onclick", "editCity()");
+  var campos = document.getElementsByClassName("datoCiudad");
+  db.ref("city").on('value', function(snap) {
+
+    snap.forEach(function(childNodes) {
+      if (ciudadActual == childNodes.val().name) {
+        campos[0].value = childNodes.val().humidity;
+        campos[1].value = childNodes.val().icon;
+        campos[2].value = childNodes.val().name;
+        campos[3].value = childNodes.val().temperature;
+      }
+    });
+  });
 }
