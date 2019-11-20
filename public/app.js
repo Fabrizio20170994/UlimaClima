@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", event => {
 
       para.innerHTML = childNodes.val().name;
       para.setAttribute("class", "dropdown-item btn");
-      para.setAttribute("onclick", "showInfo(event)");
+      para.setAttribute("onclick", "showInfoDropdown(event)");
       para.setAttribute("id", childNodes.val().name);
       element.appendChild(para);
       //This loop iterates over children of user_id
@@ -37,7 +37,14 @@ document.addEventListener("DOMContentLoaded", event => {
   });
 });
 
-function showInfo(event) {
+function showInfoDropdown(event) {
+  nombre = event.target.id;
+  showInfo(nombre);
+}
+
+
+
+function showInfo(name) {
   editar.style.display = "inline-block";
   borrar.style.display = "inline-block";
   const db = firebase.database();
@@ -51,7 +58,7 @@ function showInfo(event) {
 
     snap.forEach(function(childNodes) {
 
-      if (event.target.id == childNodes.val().name) {
+      if (name == childNodes.val().name) {
         textoDropdown.innerHTML = childNodes.val().name;
         ciudadActual = childNodes.val().name;
         humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
@@ -386,7 +393,6 @@ function addCity() {
 
 
 function editCity() {
-  var nombre = ciudadActual;
   const db = firebase.database();
   var x = document.getElementsByClassName("datoCiudad");
   var y = 1;
@@ -403,7 +409,7 @@ function editCity() {
       alert("Humedad y temperatura deben de ser numeros");
     } else {
       var ref = db.ref("city");
-      ref.child(nombre).update({
+      ref.child(ciudadActual).update({
         humidity: parseFloat(x[0].value),
         icon: x[1].value,
         latitude: markersArray2[0].getPosition().lat(),
@@ -416,6 +422,8 @@ function editCity() {
         x[i].value = "";
       }
       clearOverlays();
+      showInfo(ciudadActual);
+      setEdit();
       alert("Ciudad editada con exito");
     }
   }
