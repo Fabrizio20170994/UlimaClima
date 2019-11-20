@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", event => {
 
   var modalLatitude = 0;
   var modalLongitude = 0;
+  editar.style.display = "none";
+  borrar.style.display = "none";
 
   db.ref("city").on('value', function(snap) {
     document.getElementById("opciones").innerHTML = "";
@@ -36,6 +38,8 @@ document.addEventListener("DOMContentLoaded", event => {
 });
 
 function showInfo(event) {
+  editar.style.display = "inline-block";
+  borrar.style.display = "inline-block";
   const db = firebase.database();
   var humedad = document.getElementById("humedad");
   var temperatura = document.getElementById("temperatura");
@@ -69,22 +73,21 @@ function showInfo(event) {
           styles: nightModeMapStyles
         };
 
-        var map = new google.maps.Map(document.getElementById('map'), myOptions);
-        var map2 = new google.maps.Map(document.getElementById('modalMap'), myOptions);
+        map = new google.maps.Map(document.getElementById('map'), myOptions);
+        map2 = new google.maps.Map(document.getElementById('modalMap'), myOptions);
 
 
         placeMarker(uluru, map);
         placeMarker(uluru, map2);
 
-        map.panTo(center);
-        map2.panTo(center);
+
 
         google.maps.event.addListener(map2, 'click', function(event) {
           placeMarker2(event.latLng);
         });
 
         google.maps.event.addListener(map, 'click', function(event) {
-          placeMarker(event.latLng, map);
+          placeMarker(event.latLng);
         });
 
 
@@ -103,21 +106,32 @@ function showInfo(event) {
 
 }
 
+var editar = document.getElementById("editar");
+var borrar = document.getElementById("borrar");
+
+var map;
+var map2;
+
+
+
+
 function placeMarker2(location) {
   var marker = new google.maps.Marker({
     position: location,
     map: map2
   });
-  clearOverlays();
-  markersArray.push(marker);
+  clearOverlays2();
+  markersArray2.push(marker);
 }
 
 
-function placeMarker(location, map) {
+function placeMarker(location) {
   var marker = new google.maps.Marker({
     position: location,
     map: map
   });
+  clearOverlays();
+  markersArray.push(marker);
 }
 
 const nightModeMapStyles = [{
@@ -251,6 +265,8 @@ var longitudActual = 0;
 
 var markersArray = [];
 
+var markersArray2 = [];
+
 var ciudadActual = "";
 
 
@@ -259,6 +275,13 @@ function clearOverlays() {
     markersArray[i].setMap(null);
   }
   markersArray.length = 0;
+}
+
+function clearOverlays2() {
+  for (var i = 0; i < markersArray2.length; i++) {
+    markersArray2[i].setMap(null);
+  }
+  markersArray2.length = 0;
 }
 
 
@@ -271,7 +294,7 @@ function initMap() {
     lng: 76.971024
   };
   // The map, centered at Uluru
-  var map = new google.maps.Map(
+  map = new google.maps.Map(
     document.getElementById('map'), {
       zoom: 4,
       center: uluru,
@@ -283,7 +306,7 @@ function initMap() {
 
 
 
-  var map2 = new google.maps.Map(
+  map2 = new google.maps.Map(
     document.getElementById('modalMap'), {
       zoom: 4,
       center: uluru,
@@ -291,10 +314,10 @@ function initMap() {
     });
 
   google.maps.event.addListener(map2, 'click', function(event) {
-    placeMarker2(event.latLng);
+    placeMarker(event.latLng,map2);
   });
 
-  function placeMarker2(location) {
+  /*function placeMarker2(location) {
     var marker = new google.maps.Marker({
       position: location,
       map: map2
@@ -303,7 +326,7 @@ function initMap() {
     markersArray.push(marker);
   }
 
-
+*/
 
 }
 
@@ -330,7 +353,7 @@ function addCity() {
 
         snap.forEach(function(childNodes) {
           if (x[2].value == childNodes.val().name ||
-            (markersArray[0].getPosition().lat() == childNodes.val().latitude && markersArray[0].getPosition().lng() == childNodes.val().longitude)) {
+            (markersArray2[0].getPosition().lat() == childNodes.val().latitude && markersArray2[0].getPosition().lng() == childNodes.val().longitude)) {
             isInDb = 1;
           }
 
@@ -345,8 +368,8 @@ function addCity() {
         ref.child(x[2].value).set({
           humidity: x[0].value,
           icon: x[1].value,
-          latitude: markersArray[0].getPosition().lat(),
-          longitude: markersArray[0].getPosition().lng(),
+          latitude: markersArray2[0].getPosition().lat(),
+          longitude: markersArray2[0].getPosition().lng(),
           name: x[2].value,
           temperature: parseFloat(x[3].value)
         });
@@ -363,7 +386,7 @@ function addCity() {
 
 
 function editCity() {
-  var nombre = document.getElementById("dropdownMenuButton").innerHTML;
+  var nombre = ciudadActual;
   const db = firebase.database();
   var x = document.getElementsByClassName("datoCiudad");
   var y = 1;
@@ -373,7 +396,7 @@ function editCity() {
     if (isNaN(x[0].value) || isNaN(x[3].value)) z = 0;
   }
 
-  if (markersArray.length == 0 || y == 0) {
+  if (markersArray2.length == 0 || y == 0) {
     alert("Rellene todos los campos");
   } else {
     if (z == 0) {
@@ -383,8 +406,8 @@ function editCity() {
       ref.child(nombre).update({
         humidity: parseFloat(x[0].value),
         icon: x[1].value,
-        latitude: markersArray[0].getPosition().lat(),
-        longitude: markersArray[0].getPosition().lng(),
+        latitude: markersArray2[0].getPosition().lat(),
+        longitude: markersArray2[0].getPosition().lng(),
         name: x[2].value,
         temperature: parseFloat(x[3].value)
       });
@@ -408,7 +431,6 @@ function deleteCity() {
 
   ciudadRef.remove();
 
-
   /*db.ref("city").on('value', function(snap) {
 
     snap.forEach(function(childNodes) {
@@ -426,11 +448,15 @@ function setAdd() {
   boton = document.getElementById("botonModal");
   boton.innerHTML = "Añadir";
   boton.setAttribute("onclick", "addCity()");
+  titulo = document.getElementById("tituloModal");
+  titulo.innerHTML = "Añadir Ciudad";
   var campos = document.getElementsByClassName("datoCiudad");
   campos[0].value = "";
   campos[1].value = "";
   campos[2].value = "";
+  campos[2].readOnly = false;
   campos[3].value = "";
+  clearOverlays2();
 }
 
 function setEdit() {
@@ -448,7 +474,13 @@ function setEdit() {
         campos[0].value = childNodes.val().humidity;
         campos[1].value = childNodes.val().icon;
         campos[2].value = childNodes.val().name;
+        campos[2].readOnly = true;
         campos[3].value = childNodes.val().temperature;
+        var uluru = {
+          lat: childNodes.val().latitude,
+          lng: childNodes.val().longitude
+        };
+        placeMarker2(uluru);
       }
     });
   });
