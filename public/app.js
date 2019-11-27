@@ -42,75 +42,85 @@ function showInfoDropdown(event) {
   showInfo(nombre);
 }
 
+function generarMapas(latitud, longitud) {
+  var uluru = {
+    lat: latitud,
+    lng: longitud
+  };
 
+  var myOptions = {
+    zoom: 4,
+    center: uluru,
+    styles: nightModeMapStyles
+  };
+
+  map = new google.maps.Map(document.getElementById('map'), myOptions);
+  map2 = new google.maps.Map(document.getElementById('modalMap'), myOptions);
+
+
+  placeMarker(uluru);
+  placeMarker2(uluru);
+
+
+
+  google.maps.event.addListener(map2, 'click', function(event) {
+    placeMarker2(event.latLng);
+  });
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+  });
+}
 
 function showInfo(name) {
-  editar.style.display = "inline-block";
-  borrar.style.display = "inline-block";
-  const db = firebase.database();
+
   var humedad = document.getElementById("humedad");
   var temperatura = document.getElementById("temperatura");
   var location = document.getElementById("location");
   var cartaImagen = document.getElementById("carta-imagen");
   var textoDropdown = document.getElementById("dropdownMenuButton");
-
-  db.ref("city").on ('value', function(snap) {
-
-    snap.forEach(function(childNodes) {
-
-      if (name == childNodes.val().name) {
-        textoDropdown.innerHTML = childNodes.val().name;
-        ciudadActual = childNodes.val().name;
-        humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
-        temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " °C";
-        cartaImagen.innerHTML = '<img src="" id="imagen">';
-
-        var imagen = document.getElementById("imagen");
-        imagen.src = childNodes.val().icon;
-        longitudActual = childNodes.val().longitude;
-        latitudActual = childNodes.val().latitude;
-        var uluru = {
-          lat: childNodes.val().latitude,
-          lng: childNodes.val().longitude
-        };
-
-        var myOptions = {
-          zoom: 4,
-          center: uluru,
-          styles: nightModeMapStyles
-        };
-
-        map = new google.maps.Map(document.getElementById('map'), myOptions);
-        map2 = new google.maps.Map(document.getElementById('modalMap'), myOptions);
+  if (name == "default") {
+    textoDropdown = "Seleccionar Ciudad";
+    editar.style.display = "none";
+    borrar.style.display = "none";
+    cartaImagen.innerHTML = "";
+    generarMapas(0, 0);
+  } else {
 
 
-        placeMarker(uluru, map);
-        placeMarker(uluru, map2);
+    editar.style.display = "inline-block";
+    borrar.style.display = "inline-block";
+    const db = firebase.database();
 
 
+    db.ref("city").on('value', function(snap) {
 
-        google.maps.event.addListener(map2, 'click', function(event) {
-          placeMarker2(event.latLng);
-        });
+      snap.forEach(function(childNodes) {
 
-        google.maps.event.addListener(map, 'click', function(event) {
-          placeMarker(event.latLng);
-        });
+        if (name == childNodes.val().name) {
+          textoDropdown.innerHTML = childNodes.val().name;
+          ciudadActual = childNodes.val().name;
+          humedad.innerHTML = "Humedad: " + childNodes.val().humidity + "%";
+          temperatura.innerHTML = "Temperatura: " + childNodes.val().temperature + " °C";
+          cartaImagen.innerHTML = '<img src="" id="imagen">';
 
+          var imagen = document.getElementById("imagen");
+          imagen.src = childNodes.val().icon;
+          longitudActual = childNodes.val().longitude;
+          latitudActual = childNodes.val().latitude;
+          generarMapas(latitudActual, longitudActual);
 
+        }
+        //This loop iterates over children of user_id
+        //childNodes.key is key of the children of userid such as (20170710)
+        //childNodes.val().name;
+        //childNodes.val().time;
+        //childNodes.val().rest_time;
+        //childNodes.val().interval_time;
 
-
-      }
-      //This loop iterates over children of user_id
-      //childNodes.key is key of the children of userid such as (20170710)
-      //childNodes.val().name;
-      //childNodes.val().time;
-      //childNodes.val().rest_time;
-      //childNodes.val().interval_time;
-
+      });
     });
-  });
-
+  }
 }
 
 var editar = document.getElementById("editar");
@@ -308,7 +318,7 @@ function initMap() {
       styles: nightModeMapStyles
     });
   google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(event.latLng, map);
+    placeMarker(event.latLng);
   });
 
 
@@ -321,7 +331,7 @@ function initMap() {
     });
 
   google.maps.event.addListener(map2, 'click', function(event) {
-    placeMarker(event.latLng,map2);
+    placeMarker2(event.latLng);
   });
 
   /*function placeMarker2(location) {
@@ -350,13 +360,13 @@ function addCity() {
     if (isNaN(x[0].value) || isNaN(x[3].value)) z = 0;
   }
 
-  if (markersArray.length == 0 || y == 0) {
+  if (markersArray2.length == 0 || y == 0) {
     alert("Rellene todos los campos");
   } else {
     if (z == 0) {
       alert("Humedad y temperatura deben de ser numeros");
     } else {
-      db.ref("city").on('value', function(snap) {
+      db.ref("city").once('value', function(snap) {
 
         snap.forEach(function(childNodes) {
           if (x[2].value == childNodes.val().name ||
@@ -421,7 +431,7 @@ function editCity() {
       for (i = 0; i < x.length; i++) {
         x[i].value = "";
       }
-      clearOverlays();
+      clearOverlays2();
       showInfo(ciudadActual);
       setEdit();
       alert("Ciudad editada con exito");
@@ -438,6 +448,11 @@ function deleteCity() {
   ciudadActual = "";
 
   ciudadRef.remove();
+
+
+
+  // showInfo("default");
+
 
   /*db.ref("city").on('value', function(snap) {
 
@@ -475,7 +490,7 @@ function setEdit() {
   titulo.innerHTML = "Editar Ciudad";
   boton.setAttribute("onclick", "editCity()");
   var campos = document.getElementsByClassName("datoCiudad");
-  db.ref("city").on('value', function(snap) {
+  db.ref("city").once('value', function(snap) {
 
     snap.forEach(function(childNodes) {
       if (ciudadActual == childNodes.val().name) {
